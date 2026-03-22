@@ -1,0 +1,16 @@
+# Praxis Governance Configuration
+# This file is created by `speckit.praxis.setup` and can be customized per-project.
+
+project:
+  name: ""  # Set by setup command
+
+gates:
+  # Replace these with your project's actual commands
+  lint: ""        # e.g., "pnpm lint", "ruff check .", "cargo clippy"
+  typecheck: ""   # e.g., "pnpm typecheck", "mypy .", leave empty if N/A
+  test: ""        # e.g., "pnpm test", "pytest", "cargo test"
+  e2e: ""         # e.g., "pnpm test:e2e", "pytest tests/e2e/", leave empty if N/A
+
+review:
+  # Number of consecutive clean passes required before merge
+  clean_passes_required: 2

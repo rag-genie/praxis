@@ -1,0 +1,63 @@
+schema_version: "1.0"
+
+extension:
+  id: "praxis"
+  name: "Praxis Governance Framework"
+  version: "1.0.0"
+  description: "Battle-tested governance framework with pre-filled constitution, quality gates, traceability, and review methodology for spec-driven development."
+  author: "rag-genie"
+  repository: "https://github.com/rag-genie/praxis"
+  license: "MIT"
+
+requires:
+  speckit_version: ">=0.2.0"
+  commands:
+    - "speckit.specify"
+    - "speckit.implement"
+
+provides:
+  commands:
+    - name: "speckit.praxis.setup"
+      file: "commands/speckit.praxis.setup.md"
+      description: "Install praxis governance files (rule gates, CI templates, git hooks, constitution) into the current project."
+
+  config:
+    - name: "praxis-config.yml"
+      template: "praxis-config.template.yml"
+      description: "Praxis governance configuration"
+      required: false
+
+  templates:
+    - type: "template"
+      name: "constitution-template"
+      file: "templates/constitution-template.md"
+      description: "Constitution with portable governance sections pre-filled"
+      replaces: "constitution-template"
+    - type: "template"
+      name: "spec-template"
+      file: "templates/spec-template.md"
+      description: "Spec template with traceability requirements"
+      replaces: "spec-template"
+    - type: "template"
+      name: "tasks-template"
+      file: "templates/tasks-template.md"
+      description: "Tasks template with traceability requirements"
+      replaces: "tasks-template"
+
+hooks:
+  before_implement:
+    command: "speckit.praxis.setup"
+    optional: true
+    prompt: "Praxis governance files not detected. Install them now?"
+    description: "Verify governance files are installed before implementation begins."
+    condition: "env.PRAXIS_SKIP_CHECK is not set"
+
+tags:
+  - "governance"
+  - "quality-gates"
+  - "traceability"
+  - "constitution"
+  - "review-methodology"
+  - "ci-templates"
+  - "git-hooks"
+  - "process"
