@@ -1,0 +1,22 @@
+name: PR Tasks
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, edited]
+
+jobs:
+  pr-tasks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check all PR tasks are complete
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          unchecked=$(echo "$PR_BODY" | grep -c '^\s*- \[ \]' || true)
+          if [ "$unchecked" -gt 0 ]; then
+            echo "ERROR: PR description has $unchecked unchecked task(s). All tasks must be completed before merge."
+            echo "$PR_BODY" | grep '^\s*- \[ \]'
+            exit 1
+          fi
+          echo "All PR tasks are checked."

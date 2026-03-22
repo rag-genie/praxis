@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    # === SERVICE EXAMPLES (uncomment and configure as needed) ===
+    # services:
+    #   postgres:
+    #     image: postgres:16-alpine
+    #     ports: ["5432:5432"]
+    #     env:
+    #       POSTGRES_USER: postgres
+    #       POSTGRES_PASSWORD: postgres
+    #       POSTGRES_DB: test_db
+    #     options: >-
+    #       --health-cmd "pg_isready -U postgres"
+    #       --health-interval 10s
+    #       --health-timeout 5s
+    #       --health-retries 5
+    #
+    #   redis:
+    #     image: redis:7-alpine
+    #     ports: ["6379:6379"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # === SETUP EXAMPLES (uncomment one) ===
+      #
+      # --- Node.js ---
+      # - uses: pnpm/action-setup@v4
+      # - uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 22
+      #     cache: pnpm
+      # - run: pnpm install --frozen-lockfile
+      #
+      # --- Python ---
+      # - uses: actions/setup-python@v5
+      #   with:
+      #     python-version: "3.12"
+      # - run: pip install -r requirements.txt
+      #
+      # --- Rust ---
+      # - uses: dtolnay/rust-toolchain@stable
+      # - uses: Swatinem/rust-cache@v2
+      #
+      # --- Go ---
+      # - uses: actions/setup-go@v5
+      #   with:
+      #     go-version: "1.22"
+
+      - name: Verify no .env committed
+        run: |
+          if find . -maxdepth 3 -name '.env' -not -name '.env.example' -not -path './.git/*' | grep -q .; then
+            echo "ERROR: .env file found in repository. Secrets must not be committed."
+            exit 1
+          fi
+
+      # === QUALITY GATES (replace with your commands) ===
+      - name: Lint
+        run: echo "TODO: Add lint command (e.g., pnpm lint, ruff check ., cargo clippy)"
+
+      - name: Typecheck
+        run: echo "TODO: Add typecheck command (e.g., pnpm typecheck, mypy .)"
+
+      - name: Test
+        run: echo "TODO: Add test command (e.g., pnpm test, pytest, cargo test)"

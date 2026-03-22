@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# Conventional commit message validation hook
+# Install: cp this file to .git/hooks/commit-msg && chmod +x .git/hooks/commit-msg
+
+commit_msg_file="$1"
+commit_msg=$(head -1 "$commit_msg_file")
+
+# Pattern: type(scope): description  OR  type: description
+pattern='^(feat|fix|refactor|test|docs|chore|merge)(\([a-zA-Z0-9._-]+\))?: .+'
+
+if ! echo "$commit_msg" | grep -qE "$pattern"; then
+    echo "ERROR: Commit message does not follow Conventional Commits format."
+    echo ""
+    echo "Expected: type(scope): description"
+    echo "  or:     type: description"
+    echo ""
+    echo "Valid types: feat, fix, refactor, test, docs, chore, merge"
+    echo ""
+    echo "Examples:"
+    echo "  feat(auth): add OAuth2 login flow"
+    echo "  fix: resolve null pointer in user service"
+    echo "  docs(api): update endpoint documentation"
+    echo ""
+    echo "Your message: $commit_msg"
+    exit 1
+fi
