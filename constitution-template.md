@@ -609,7 +609,18 @@ must use a two-phase approach:
 version must be retained until the new version is verified stable.
 
 **Release automation** — Changelog and release notes must be generated automatically from
-conventional commit messages on `main`. Manual changelog maintenance is prohibited.
+conventional commit messages on `main` using a tool such as release-please. §8.3's
+squash-merge policy ensures each merge commit on `main` is a single conventional commit
+that release tooling can parse; branches with multiple independently releasable changes
+must be split into separate PRs per §8.3 so each squash commit represents one releasable
+unit. Manual changelog maintenance is prohibited to prevent drift and human error.
+
+[Define release note tiers if applicable. Common pattern:]
+
+- **Internal** (full commit history): generated automatically, includes all conventional
+  commit types for developer reference.
+- **External** (user-facing): includes only `feat` and `fix` entries, written from the
+  user's perspective per §8.3.
 
 ### 9.8 Idempotency & Recovery
 
